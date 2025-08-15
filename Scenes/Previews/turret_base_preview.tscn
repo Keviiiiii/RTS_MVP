@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://deja7pa7ygre6"]
+
+[ext_resource type="Texture2D" uid="uid://cof08rcbkit8u" path="res://Sprites/RTS_MVP - Turret Base.png" id="1_0e0bx"]
+
+[node name="turret_base_preview" type="Node2D"]
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
+texture = ExtResource("1_0e0bx")

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://ytovgs80mjmx"]
+
+[ext_resource type="Texture2D" uid="uid://bb1aiy17sq4ff" path="res://Sprites/RTS_MVP - Wall.png" id="1_xvpe1"]
+
+[node name="WallPreview" type="Node2D"]
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
+self_modulate = Color(1, 0.81325, 0.930822, 1)
+texture = ExtResource("1_xvpe1")

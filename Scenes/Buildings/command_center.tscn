@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxmqx6kv4c5m"]
+
+[ext_resource type="Script" uid="uid://fwhumh1m5l04" path="res://Scripts/command_center.gd" id="1_vxdoc"]
+[ext_resource type="Texture2D" uid="uid://dk3fdutfwg8ou" path="res://Sprites/RTS_MVP - Command Center.png" id="2_8wir0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yc7ai"]
+size = Vector2(64, 64)
+
+[node name="CommandCenter" type="Area2D" groups=["buildings", "command_center"]]
+collision_layer = 16
+collision_mask = 15
+script = ExtResource("1_vxdoc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_8wir0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_yc7ai")

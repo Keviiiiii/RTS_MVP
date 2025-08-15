@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bo62qe32so12e"]
+
+[ext_resource type="Texture2D" uid="uid://bb1aiy17sq4ff" path="res://Sprites/RTS_MVP - Wall.png" id="1_afcx7"]
+[ext_resource type="Script" uid="uid://cmy0186yju5pa" path="res://Scripts/wall.gd" id="1_buglo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_avus0"]
+size = Vector2(128, 128)
+
+[node name="Wall" type="Area2D" groups=["buildings"]]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_buglo")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_afcx7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.25, 0.25)
+shape = SubResource("RectangleShape2D_avus0")

@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://bvfm2rtawtbrd"]
+
+[ext_resource type="Script" uid="uid://c2s1mjs32oy2s" path="res://Scripts/enemy.gd" id="1_notgg"]
+[ext_resource type="Texture2D" uid="uid://du758hcx7uytt" path="res://Sprites/RTS_MVP - Pistol Gunner.png" id="2_notgg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_notgg"]
+size = Vector2(629.997, 640.001)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cpjt6"]
+size = Vector2(320.001, 260.084)
+
+[node name="enemy" type="CharacterBody2D" groups=["enemies"]]
+rotation = 3.14159
+scale = Vector2(0.5, 0.5)
+collision_layer = 2
+collision_mask = 117
+script = ExtResource("1_notgg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_notgg")
+offset = Vector2(0, -2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+texture_filter = 1
+position = Vector2(1.81899e-12, 9.53674e-07)
+scale = Vector2(0.025, 0.025)
+shape = SubResource("RectangleShape2D_notgg")
+
+[node name="Hitbox" type="Area2D" parent="." groups=["enemies"]]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(2.1684e-19, 5.68434e-14)
+scale = Vector2(0.05, 0.05)
+shape = SubResource("RectangleShape2D_cpjt6")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
