@@ -1,19 +1,28 @@
-extends Area2D
+extends CombatBuilding
 
-@export var max_health := 200
-var current_health:= 500
+@export var game_over_scene: PackedScene
 
 func _ready() -> void:
-	current_health - max_health
-	add_to_group("buildings")
-	add_to_group("command_center")
+	max_health = 200
+	attack_damage = 0
+	attack_speed = 0
+	attack_range = 0
+	log_attacks = false
+	super()
 
-func take_damage(amount: int) -> void:
-	current_health -= amount
-	print(current_health)
-	if current_health <= 0:
-		_on_destroyed()
+func _process(delta: float) -> void:
+	pass
 
-func _on_destroyed() -> void:
-	GameManager.on_command_center_destroyed()
+func die() -> void:
 	queue_free()
+	game_over()
+
+func game_over() -> void:
+	get_tree().paused = true  # Freeze the game
+	if game_over_scene:
+		var menu_instance = game_over_scene.instantiate()
+		menu_instance.setup(false)
+		get_tree().current_scene.add_child(menu_instance)
+		menu_instance.show()
+	else:
+		print("Game Over! (No menu assigned)")

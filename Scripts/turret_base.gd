@@ -1,22 +1,14 @@
-extends Area2D
+extends CombatBuilding
 
-@export var gun_scene: PackedScene
-@export var footprint := Vector2i(2,2)
-@export var health := 100
+@export var weapon_scene: PackedScene = preload("res://Scenes/Buildings/Weapons/basic_gun.tscn")
+var weapon: Node2D = null
 
-@onready var gun_mount = $GunMount
+@onready var weapon_mount: Node2D = $GunMount
 
 func _ready() -> void:
-	set_meta("footprint", footprint)
-	if gun_scene:
-		var gun = gun_scene.instantiate()
-		gun.position = gun_mount.position
-		add_child(gun)
+	if weapon_scene:
+		weapon = weapon_scene.instantiate()
+		weapon_mount.add_child(weapon)
+		weapon.turret_base = self
 
-func take_damage(amount: int) -> void:
-	health -= amount
-	print(health)
-	if health <= 0:
-		queue_free()
-#func get_footprint() -> Vector2i:
-	#return footprint
+	max_health = 200

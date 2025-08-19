@@ -12,12 +12,6 @@ collision_layer = 16
 collision_mask = 15
 script = ExtResource("1_vxdoc")
 game_over_scene = ExtResource("2_yc7ai")
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
-log_attacks = null
-size_in_cells = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1

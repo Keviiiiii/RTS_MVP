@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://crrhr3y3ikc3a"]
+[gd_scene load_steps=6 format=3 uid="uid://crrhr3y3ikc3a"]
 
 [ext_resource type="Script" uid="uid://cdn4syd16pn5e" path="res://Scripts/main.gd" id="1_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://bvfm2rtawtbrd" path="res://Scenes/enemies/enemy.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://b6kudx41sbutq" path="res://Scenes/Buildings/turret_base.tscn" id="4_jjvhh"]
-[ext_resource type="Script" uid="uid://bly0drbqefdm" path="res://Scripts/Core/GridManager.gd" id="4_kry3j"]
+[ext_resource type="Script" uid="uid://clcexn3ayqljm" path="res://Scripts/enemy_spawner.gd" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://bxmqx6kv4c5m" path="res://Scenes/Buildings/command_center.tscn" id="6_21xkr"]
 
 [node name="Main" type="Node2D"]
@@ -14,27 +15,13 @@ offset_bottom = 720.0
 color = Color(0.598454, 0.995823, 0.60172, 0.188235)
 
 [node name="Turret" parent="." instance=ExtResource("4_jjvhh")]
-position = Vector2(592, 384)
-weapon_scene = null
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
-size_in_cells = null
+position = Vector2(584, 384)
+
+[node name="EnemySpawner" type="Node2D" parent="."]
+position = Vector2(640, 64)
+script = ExtResource("5_kry3j")
+enemy_scene = ExtResource("3_8gbba")
+spawn_position = Vector2(576, 64)
 
 [node name="CommandCenter" parent="." instance=ExtResource("6_21xkr")]
 position = Vector2(640, 384)
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
-log_attacks = null
-size_in_cells = null
-
-[node name="EnemySpawnTimer" type="Timer" parent="."]
-wait_time = 2.0
-
-[node name="GridManager" type="Node" parent="."]
-script = ExtResource("4_kry3j")
-
-[connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

@@ -1,170 +1,128 @@
 extends Node2D
 
-const GRID_SIZE = 16
-const GUN_TYPES = [
-	preload("res://Scenes/Buildings/Weapons/basic_gun.tscn"),
-	preload("res://Scenes/Buildings/Weapons/sniper_turret.tscn")
-]
+const GRID_SIZE: int = 16
+const BUILD_RADIUS: int = 250
+const NO_BUILD_RADIUS: int = 500
+const SPAWN_RADIUS: int = 750
 
-#list of building types
-var building_types = [
-	{
-		name = "Wall",
-		build_scene = preload("res://Scenes/Buildings/wall.tscn"),
-		preview_scene = preload("res://Scenes/Previews/wall_preview.tscn"),
-		size = Vector2(1,1)
-	},
-	{
-		name = "Turret",
-		build_scene = preload("res://Scenes/Buildings/turret_base.tscn"),
-		preview_scene = preload("res://Scenes/Previews/turret_base_preview.tscn"),
-		size = Vector2(2,2)
-	}
-]
+var occupied_cells: Array= []
+var selected_building_scene: PackedScene = null
+var ghost_building: Node2D = null
 
-var current_building_index = 0
-var preview: Node2D
-var occupied_cells := {}
-
-func _ready() -> void:
-	print("ready")
-	add_to_group("game")
-	load_preview()
+@onready var command_center = $CommandCenter
+@onready var grid_manager: GridManager = $GridManager
 
 func _process(delta: float) -> void:
-	update_preview_position()
+	if ghost_building:
+		var snapped_pos = grid_manager.snap_to_grid(get_global_mouse_position())
+		ghost_building.global_position = snapped_pos
+		
+		if can_place_building_at(snapped_pos):
+			ghost_building.modulate = Color(0, 1, 0, .5) #green - valid
+		else:
+			ghost_building.modulate = Color(1, 0, 0, 0.5) #red - invalid
+
+#--grid helpers--
+
+#--zone checks--
+func is_in_build_zone(world_pos: Vector2) -> bool:
+	return world_pos.distance_to(command_center.global_position) <= BUILD_RADIUS
+
+func is_in_no_build_zone(world_pos: Vector2) -> bool:
+	return world_pos.distance_to(command_center.global_position) <= NO_BUILD_RADIUS and not is_in_build_zone(world_pos)
+
+func is_in_spawn_zone(world_pos: Vector2) -> bool:
+	return world_pos.distance_to(command_center.global_position) >= SPAWN_RADIUS
+
+#--building selector
+func select_building(scene: PackedScene):
+	print("select building called")
+	selected_building_scene = scene
 	
-	var grid_pos = get_grid_position(get_viewport().get_mouse_position())
-	preview.position = to_world_position(grid_pos)
+	if ghost_building: 
+		ghost_building.queue_free()
+		ghost_building = null
 	
-	var can_place = true
-	for x in range(building_types[current_building_index].size.x):
-		for y in range(building_types[current_building_index].size.y):
-			var cell = grid_pos + Vector2i(x,y)
-			if occupied_cells.has(cell):
-				can_place = false
-	preview.modulate = Color(0, 1, 0, 0.5) if can_place else Color(1, 0, 0, 0.5)
+	if scene != null:
+		ghost_building = scene.instantiate()
+		add_child(ghost_building)
+		ghost_building.modulate = Color(1,1,1,0.5)
+		ghost_building.z_index = 1000
+		ghost_building.global_position = grid_manager.snap_to_grid(get_global_mouse_position())
+		print("Selected building: ", scene.resource_path)
+	else:
+		print("building selection cleared")
+
+#--building placement--
+func try_place_building():
+	if selected_building_scene == null:
+		print("no building selected")
+		return
+	
+	var snapped_pos = grid_manager.snap_to_grid(get_global_mouse_position())
+	if not can_place_building_at(ghost_building):
+		print("blocked: invalid placement")
+		return
+		
+	var new_building = selected_building_scene.instantiate()
+	add_child(new_building)
+	new_building.global_position = snapped_pos
+	
+	var cells = new_building.get_occupied_cells(grid_manager)
+	grid_manager.occupy_cell(cells)
+	
+	print("placed building at: ", cells)
+	#var cell_world = grid_manager.snap_to_grid(get_global_mouse_position())
+	#var cell = grid_manager.world_to_grid(cell_world)
+	#print("mouse at: ", get_global_mouse_position(),"| snapped: ", cell_world)
+	##Check placement zones
+	#if not can_place_building_at(cell_world):
+		#print("blocked: invalid placement")
+		#return
+	#
+	##place building
+	#var new_building = selected_building_scene.instantiate()
+	#add_child(new_building)
+	#new_building.global_position = cell_world
+	#grid_manager.occupy_cell(cell)
+	#print("placing building at: ", cell)
+
+func can_place_building_at(building: CombatBuilding) -> bool:
+	var cells = building.get_occupied_cells()
+	if not is_in_build_zone(building.global_position):
+		return false
+	if is_in_no_build_zone(building.global_position):
+		return false
+	return true
+	
+	for cell in cells:
+		if grid_manager.is_cell_occupied(cell):
+			return false
+#enemy spawining
+func spawn_enemy(enemy_scene: PackedScene):
+	var spawn_pos = get_random_spawn_position()
+	var enemy = enemy_scene.instantiate()
+	add_child(enemy)
+	enemy.global_position = spawn_pos
+
+func get_random_spawn_position():
+	var angle = randf() * TAU
+	var distance = SPAWN_RADIUS + randf() * 50
+	var pos = command_center.global_position + Vector2(cos(angle), sin(angle)) * distance
+	return grid_manager.snap_to_grid(pos)
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_1:
+				select_building(preload("res://Scenes/Buildings/wall.tscn"))
+			KEY_2:
+				select_building(preload("res://Scenes/Buildings/turret_base.tscn"))
+			KEY_0:
+				select_building(null)
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
 			try_place_building()
-		elif event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
-			if not try_switch_gun_on_hover(1):
-				change_building_type(1)
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
-			if not try_switch_gun_on_hover(-1):
-				change_building_type(-1)
-		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			remove_building_at_cursor()
 
-func try_place_building() -> void:
-	var grid_pos = get_grid_position(preview.position)
-
-	# Start with the default size from building_types
-	var size = building_types[current_building_index].size
-
-	# Check if the cells are free before placing
-	for x in range(size.x):
-		for y in range(size.y):
-			var cell = grid_pos + Vector2i(x, y)
-			if occupied_cells.has(cell):
-				print("Can't place at: ", cell)
-				return
-
-	# Instantiate and position the building
-	var new_building = building_types[current_building_index].build_scene.instantiate()
-	new_building.position = to_world_position(grid_pos)
-	add_child(new_building)
-
-	# ✅ Safely check for a custom 'footprint' in the script
-	if new_building.has_meta("footprint"):
-		size = new_building.footprint
-	else:
-		size = Vector2i(1, 1)
-
-	# Mark those grid cells as occupied
-	for x in range(size.x):
-		for y in range(size.y):
-			var cell = grid_pos + Vector2i(x, y)
-			occupied_cells[cell] = true
-
-func try_switch_gun_on_hover(direction: int) -> bool:
-	var mouse_pos = get_viewport().get_mouse_position()
-	var query = PhysicsPointQueryParameters2D.new()
-	query.position = mouse_pos
-	query.collide_with_areas = true
-	query.collide_with_bodies = true
-	
-	var results = get_world_2d().direct_space_state.intersect_point(query)
-	
-	for result in results:
-		var turret = result.collider
-		if turret and turret.has_method("set_gun_index"):
-			turret.set_gun_index(direction)
-			return(true)
-	
-	return(false)
-
-func change_building_type(direction: int) -> void:
-	current_building_index = (current_building_index + direction) % building_types.size()
-	if current_building_index < 0:
-		current_building_index = building_types.size() - 1
-	load_preview()
-
-func load_preview() -> void:
-	if preview:
-		preview.queue_free()
-	preview = building_types[current_building_index].preview_scene.instantiate()
-	add_child(preview)
-	print("switched to: ", building_types[current_building_index].name)
-
-func get_grid_position(world_pos: Vector2) -> Vector2i:
-	return Vector2i(
-		floor(world_pos.x / GRID_SIZE),
-		floor(world_pos.y / GRID_SIZE)
-	)
-
-func to_world_position(grid_pos: Vector2i) -> Vector2:
-	return grid_pos * GRID_SIZE
-
-func remove_building_at_cursor() -> void:
-	var mouse_pos = get_viewport().get_mouse_position()
-	
-	var query = PhysicsPointQueryParameters2D.new()
-	query.position = mouse_pos
-	query.collide_with_areas = true
-	query.collide_with_bodies = true
-	
-	var results = get_world_2d().direct_space_state.intersect_point(query)
-	
-	for hit in results:
-		var building = hit.collider
-		if building and building != preview:
-			print("removing: ", building.name)
-			
-			var grid_pos = get_grid_position(building.position)
-			
-			var size = Vector2i(1,1)
-			if building.has_meta("footprint"):
-				size = building.get("footprint")
-				
-			for x in range(size.x):
-				for y in range(size.y):
-					var cell = grid_pos + Vector2i(x, y)
-					occupied_cells.erase(cell)
-					
-			building.queue_free()
-			break
-
-func update_preview_position() -> void:
-	var mouse_pos = get_viewport().get_mouse_position()
-	var grid_pos = get_grid_position(mouse_pos)
-	preview.position = to_world_position(grid_pos)
-
-func on_command_center_destroyed() -> void:
-	show_game_over_menu()
-
-func show_game_over_menu() -> void:
-	var game_over_menu = preload("res://Scenes/UI/game_over_menu.tscn")
-	get_tree().root.add_child(game_over_menu)
+func _on_enemy_spawn_timer_timeout() -> void:
+	spawn_enemy(preload("res://Scenes/enemies/enemy.tscn"))

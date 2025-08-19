@@ -1,16 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://b6kudx41sbutq"]
+[gd_scene load_steps=4 format=3 uid="uid://b6kudx41sbutq"]
 
 [ext_resource type="Script" uid="uid://dr4a2ljggpu8h" path="res://Scripts/turret_base.gd" id="1_kb3dm"]
 [ext_resource type="Texture2D" uid="uid://cof08rcbkit8u" path="res://Sprites/RTS_MVP - Turret Base.png" id="2_d831r"]
-[ext_resource type="PackedScene" uid="uid://b5700baladeeq" path="res://Scenes/Buildings/Weapons/basic_gun.tscn" id="3_d831r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aefln"]
 size = Vector2(128, 128)
 
-[node name="Turret" type="Area2D" groups=["buildings"]]
+[node name="Turret_base" type="Area2D" groups=["buildings"]]
 collision_layer = 16
 collision_mask = 15
 script = ExtResource("1_kb3dm")
+weapon_scene = null
+max_health = null
+attack_damage = null
+attack_speed = null
+attack_range = null
+log_attacks = true
+size_in_cells = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_d831r")
@@ -20,5 +26,3 @@ scale = Vector2(0.25, 0.25)
 shape = SubResource("RectangleShape2D_aefln")
 
 [node name="GunMount" type="Marker2D" parent="."]
-
-[node name="Basic_Gun" parent="." instance=ExtResource("3_d831r")]

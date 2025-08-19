@@ -1,13 +1,12 @@
-extends Area2D
-
-@export var footprint := Vector2i(1,1)
-@export var health := 500
+extends CombatBuilding
 
 func _ready() -> void:
-	set_meta("footprint", footprint)
+	max_health = 200
+	attack_damage = 0
+	attack_speed = 0
+	attack_range = 0
+	log_attacks = false
+	super()
 
-func take_damage(amount: int) -> void:
-	health -= amount
-	print(health)
-	if health <= 0:
-		queue_free()
+func _process(delta: float) -> void:
+	pass

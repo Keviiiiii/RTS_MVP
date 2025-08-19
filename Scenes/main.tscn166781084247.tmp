@@ -15,21 +15,9 @@ color = Color(0.598454, 0.995823, 0.60172, 0.188235)
 
 [node name="Turret" parent="." instance=ExtResource("4_jjvhh")]
 position = Vector2(592, 384)
-weapon_scene = null
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
-size_in_cells = null
 
 [node name="CommandCenter" parent="." instance=ExtResource("6_21xkr")]
 position = Vector2(640, 384)
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
-log_attacks = null
-size_in_cells = null
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
 wait_time = 2.0

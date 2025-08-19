@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfo4u4nmne2ac"]
+
+[ext_resource type="Script" uid="uid://stampnhp4jpw" path="res://Scripts/Core/projectile.gd" id="1_lal66"]
+
+[node name="Projectile" type="Area2D"]
+collision_layer = 4
+collision_mask = 10
+script = ExtResource("1_lal66")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmnvn357mqjm6"]
+
+[ext_resource type="Script" uid="uid://3gm527ypitr3" path="res://Scripts/Core/combat_character.gd" id="1_kkl4c"]
+
+[node name="CombatCharacter" type="CharacterBody2D"]
+script = ExtResource("1_kkl4c")

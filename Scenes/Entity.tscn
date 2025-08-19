@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://djoo537y4uj4n"]
+
+[ext_resource type="Script" uid="uid://dayivqskpl518" path="res://Scripts/Core/Entity.gd" id="1_pghlq"]
+
+[node name="Entity" type="Area2D"]
+script = ExtResource("1_pghlq")

@@ -10,6 +10,12 @@ size = Vector2(128, 128)
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_buglo")
+max_health = null
+attack_damage = null
+attack_speed = null
+attack_range = null
+log_attacks = null
+size_in_cells = null
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

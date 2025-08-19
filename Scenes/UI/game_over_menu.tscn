@@ -42,9 +42,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -28.0
-offset_top = -4.0
+offset_top = -8.0
 offset_right = 30.0
-offset_bottom = 27.0
+offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Retry"
@@ -57,9 +57,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = 36.0
+offset_top = 32.0
 offset_right = 22.0
-offset_bottom = 67.0
+offset_bottom = 63.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Quit"
@@ -67,11 +67,10 @@ text = "Quit"
 [node name="Resume" type="Button" parent="Panel"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 40.0
+offset_top = 36.0
 offset_right = 198.0
-offset_bottom = 71.0
-text = "Resume
-"
+offset_bottom = 67.0
+text = "Resume"
 
 [connection signal="pressed" from="Panel/Retry" to="." method="_on_retry_pressed"]
 [connection signal="pressed" from="Panel/Quit" to="." method="_on_quit_pressed"]

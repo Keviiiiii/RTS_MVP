@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 GameManager="*res://Managers/game_manager.gd"
 
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
 [input]
 
 pause={
@@ -33,6 +38,7 @@ pause={
 2d_physics/layer_2="Enemy Units"
 2d_physics/layer_3="Friendly Bullets"
 2d_physics/layer_4="Enemy Bullets"
-2d_physics/layer_5="Buildings"
-2d_physics/layer_6="Flying Units"
+2d_physics/layer_5="Friendly Buildings"
+2d_physics/layer_6="Enemy Buildings"
 2d_physics/layer_7="Obstacles"
+2d_physics/layer_8="Flying Units"

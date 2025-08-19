@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-@onready var resume_button = $Panel/Resume
-
 var is_pause_menu := false
 
 func _ready() -> void:
@@ -20,7 +18,7 @@ func _on_retry_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
-	
+
 func _on_resume_pressed() -> void:
 	get_tree().paused = false
 	queue_free()

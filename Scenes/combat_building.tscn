@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbia76fidwn5p"]
+
+[ext_resource type="Script" uid="uid://241x0uodrrlh" path="res://Scripts/Core/combat_building.gd" id="1_1dhux"]
+
+[node name="combat_building" type="Area2D"]
+script = ExtResource("1_1dhux")
+max_health = null
+attack_damage = null
+attack_speed = null
+attack_range = null
+log_attacks = null
+size_in_cells = null
