@@ -1,5 +1,6 @@
 extends CombatBuilding
 
+
 func _ready() -> void:
 	max_health = 200
 	attack_damage = 0

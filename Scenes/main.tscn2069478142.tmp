@@ -27,5 +27,7 @@ autostart = true
 script = ExtResource("4_kry3j")
 
 [node name="GridOverlay" parent="." instance=ExtResource("5_kry3j")]
+grid_size = null
+grid_color = null
 
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

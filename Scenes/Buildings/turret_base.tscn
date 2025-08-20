@@ -10,19 +10,17 @@ size = Vector2(128, 128)
 collision_layer = 16
 collision_mask = 15
 script = ExtResource("1_kb3dm")
-weapon_scene = null
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
 log_attacks = true
-size_in_cells = null
+size_in_cells = Vector2i(2, 2)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_d831r")
+centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(16, 16)
 scale = Vector2(0.25, 0.25)
 shape = SubResource("RectangleShape2D_aefln")
 
 [node name="GunMount" type="Marker2D" parent="."]
+position = Vector2(16, 16)

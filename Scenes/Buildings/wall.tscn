@@ -4,23 +4,20 @@
 [ext_resource type="Script" uid="uid://cmy0186yju5pa" path="res://Scripts/wall.gd" id="1_buglo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_avus0"]
-size = Vector2(128, 128)
+size = Vector2(64, 64)
 
 [node name="Wall" type="Area2D" groups=["buildings"]]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_buglo")
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
-log_attacks = null
-size_in_cells = null
-metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
 texture = ExtResource("1_afcx7")
+centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, 8)
 scale = Vector2(0.25, 0.25)
 shape = SubResource("RectangleShape2D_avus0")
+metadata/_edit_group_ = true

@@ -7,7 +7,7 @@ class_name CombatBuilding
 @export var attack_range: float = 100
 @export var log_attacks: bool = false
 @export var size_in_cells: Vector2i = Vector2i(1,1)
-@export var size: Vector2i = Vector2i(1,2)
+@export var grid_size: int = 16
 
 var current_health: int
 var attack_cooldown: float = 0.0
@@ -53,13 +53,20 @@ func die() -> void:
 	emit_signal("died")
 	queue_free()
 
-func get_occupied_cells(grid_size: int = 16) -> Array:
-	var cells: Array = []
-	var top_left = Vector2i(
-		int (floor(get_global_position.x / grid_size)),
-		int (floor(get_global_position.y / grid_size))
+
+func get_occupied_cells() -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	var snapped_x = floor(global_position.x / grid_size) * grid_size
+	var snappex_y = floor(global_position.y / grid_size) * grid_size
+	var top_left_world := Vector2(snapped_x, snappex_y)
+	
+	var top_left_cell := Vector2i(
+		int(top_left_world.x / grid_size),
+		int(top_left_world.y / grid_size)
 	)
 	
-	for x in range(size.x):
-		for y in range(size.y):
-			cells.append(top_left + Vector2i(x, y))
+	for x in range(size_in_cells.x):
+		for y in range(size_in_cells.y):
+			cells.append(top_left_cell + Vector2i(x, y))
+	
+	return cells

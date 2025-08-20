@@ -4,9 +4,3 @@
 
 [node name="combat_building" type="Area2D"]
 script = ExtResource("1_1dhux")
-max_health = null
-attack_damage = null
-attack_speed = null
-attack_range = null
-log_attacks = null
-size_in_cells = null

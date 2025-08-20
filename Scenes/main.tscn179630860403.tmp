@@ -15,17 +15,19 @@ offset_bottom = 720.0
 color = Color(0.598454, 0.995823, 0.60172, 0.188235)
 
 [node name="Turret" parent="." instance=ExtResource("4_jjvhh")]
-position = Vector2(592, 336)
+position = Vector2(592, 384)
 
 [node name="CommandCenter" parent="." instance=ExtResource("6_21xkr")]
-position = Vector2(640, 320)
+position = Vector2(640, 384)
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
-autostart = true
+wait_time = 2.0
 
 [node name="GridManager" type="Node" parent="."]
 script = ExtResource("4_kry3j")
 
 [node name="GridOverlay" parent="." instance=ExtResource("5_kry3j")]
+grid_size = 16
+grid_color = Color(1, 1, 1, 0.2)
 
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

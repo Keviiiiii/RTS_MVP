@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://crrhr3y3ikc3a"]
+[gd_scene load_steps=5 format=3 uid="uid://crrhr3y3ikc3a"]
 
 [ext_resource type="Script" uid="uid://cdn4syd16pn5e" path="res://Scripts/main.gd" id="1_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://b6kudx41sbutq" path="res://Scenes/Buildings/turret_base.tscn" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://bly0drbqefdm" path="res://Scripts/Core/GridManager.gd" id="4_kry3j"]
-[ext_resource type="PackedScene" uid="uid://cejf5lr8m24b3" path="res://Managers/grid_overlay.tscn" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://bxmqx6kv4c5m" path="res://Scenes/Buildings/command_center.tscn" id="6_21xkr"]
 
 [node name="Main" type="Node2D"]
@@ -15,17 +14,15 @@ offset_bottom = 720.0
 color = Color(0.598454, 0.995823, 0.60172, 0.188235)
 
 [node name="Turret" parent="." instance=ExtResource("4_jjvhh")]
-position = Vector2(592, 336)
+position = Vector2(592, 384)
 
 [node name="CommandCenter" parent="." instance=ExtResource("6_21xkr")]
-position = Vector2(640, 320)
+position = Vector2(640, 384)
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
-autostart = true
+wait_time = 2.0
 
 [node name="GridManager" type="Node" parent="."]
 script = ExtResource("4_kry3j")
-
-[node name="GridOverlay" parent="." instance=ExtResource("5_kry3j")]
 
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
